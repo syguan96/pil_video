@@ -12,7 +12,7 @@ import shutil
 import imageio
 
 
-def make_video(image_list: list, fps: int, delete_folder=True, play_video=True):
+def make_video(image_list: list, fps: int, dirpath: str, save_images=False, play_video=False, verbose=False):
     """The main def for creating a temporary video out of the 
     PIL Image list passed, according to the FPS passed
     Parameters
@@ -21,28 +21,26 @@ def make_video(image_list: list, fps: int, delete_folder=True, play_video=True):
         A list of PIL Images in sequential order you want the video to be generated
     fps : int
         The FPS of the video
-    delete_folder : bool, optional
-        If set to False, this will not delete the temporary folder where images and video are saved, by default True
+    dirpath : str
+        dir of results
+    save_images : bool, optional
+        If set to True, won't save images, by default False
     play_video : bool, optional
         If set to false, the video generated will not be played, by default True
+    verbose : bool, optional
+        If set to True, print the path of results, by default False
     """
-    # Make an empty directort in temp, which we are gonna delete later
-    dirpath = tempfile.mkdtemp()  # Example: '/tmp/tmpacxadh7t'
+
     video_filenames = []
     for i, each_image in enumerate(image_list):
-        # TODO: Correct the below snippet
-        # if not isinstance(each_image, type(Image)):
-        #     raise Exception("The element is not an PIL Image instance")
         filename = "{}/{}.png".format(dirpath, i)
         video_filenames.append(filename)
-        each_image.save("{}".format(filename))
+        if save_images:
+            each_image.save("{}".format(filename))
     writer = imageio.get_writer("{}/test.mp4".format(dirpath), fps=fps)
     for each_image in video_filenames:
         writer.append_data(imageio.imread(each_image))
     writer.close()
     if play_video:
         os.system("vlc {}/test.mp4 vlc://quit".format(dirpath))
-    if delete_folder:
-        shutil.rmtree(dirpath)
-    else:
-        print("Find your images and video at {}".format(dirpath))
+    print("Find your images and video at {}".format(dirpath))
