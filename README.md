@@ -1,3 +1,11 @@
+#### Adapt it to the no-displayer case.
+
+See `make_video` for more information
+
+
+
+-------------
+
 # pil_video
 ![PyPi](https://github.com/krishnachaitanya7/pil_video/workflows/PyPi/badge.svg)
 ![Flake8 Status](https://github.com/krishnachaitanya7/pil_video/workflows/Flake8%20Status/badge.svg)
