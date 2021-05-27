@@ -30,16 +30,14 @@ def make_video(image_list: list, fps: int, dirpath: str, save_images=False, play
     verbose : bool, optional
         If set to True, print the path of results, by default False
     """
-
+    writer = imageio.get_writer("{}/test.mp4".format(dirpath), fps=fps)
     video_filenames = []
     for i, each_image in enumerate(image_list):
         filename = "{}/{}.png".format(dirpath, i)
         video_filenames.append(filename)
         if save_images:
             each_image.save("{}".format(filename))
-    writer = imageio.get_writer("{}/test.mp4".format(dirpath), fps=fps)
-    for each_image in video_filenames:
-        writer.append_data(imageio.imread(each_image))
+        writer.append_data(np.asarray(each_image))
     writer.close()
     if play_video:
         os.system("vlc {}/test.mp4 vlc://quit".format(dirpath))
